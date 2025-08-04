@@ -316,16 +316,81 @@ The framework uses Winston for comprehensive logging:
 
 ### Test Coverage Metrics
 
-#### Current Test Coverage
-- **Unique Test Cases**: 15 automated tests (5 login + 10 search)
-- **Total Test Executions**: 105 per full run (15 tests × 7 platforms)
-- **Login Module**: 5 test cases × 7 platforms = 35 executions
-- **Search Module**: 10 test cases × 7 platforms = 70 executions
-- **Browser Coverage**: 4 browsers across 7 configurations
-- **Platform Coverage**: Desktop (4), Mobile (2), Tablet (1)
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                            TEST COVERAGE OVERVIEW                           ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║                                                                              ║
+║     ┌─────────────────────────────────────────────────────────────────┐     ║
+║     │                    AUTOMATED TEST MATRIX                        │     ║
+║     │                                                                  │     ║
+║     │  Test Cases:  15 (5 Login + 10 Search)                          │     ║
+║     │  Platforms:   7 (Desktop, Mobile, Tablet)                       │     ║
+║     │  Executions:  105 Total per Full Run                            │     ║
+║     │  Browsers:    Chrome, Firefox, Safari, Edge                     │     ║
+║     │                                                                  │     ║
+║     └─────────────────────────────────────────────────────────────────┘     ║
+║                                                                              ║
+║  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐          ║
+║  │   LOGIN TESTS   │    │  SEARCH TESTS   │    │  TOTAL COVERAGE │          ║
+║  │                 │    │                 │    │                 │          ║
+║  │   5 Test Cases  │    │  10 Test Cases  │    │  15 Test Cases  │          ║
+║  │   × 7 Platforms │    │  × 7 Platforms  │    │  × 7 Platforms  │          ║
+║  │   = 35 Runs     │    │   = 70 Runs     │    │   = 105 Runs    │          ║
+║  │                 │    │                 │    │                 │          ║
+║  └─────────────────┘    └─────────────────┘    └─────────────────┘          ║
+║                                                                              ║
+╠══════════════════════════════════════════════════════════════════════════════╣
+║  TEST CASE DESIGN SPECIFICATION:                                            ║
+║  https://docs.google.com/spreadsheets/d/1R60oPosW-JU9oiBXb5BUvi9_5HGy5iF4Q ║
+║      RvJ4zJQP24/edit?usp=sharing                                            ║
+║                                                                              ║
+║  All automated test cases follow the test design in the Google Sheets above ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+#### Automated Test Coverage Distribution
 
 ```
-[INFO] See TEST_TRACEABILITY_MATRIX.md for detailed test execution breakdown
+    LOGIN MODULE (5 Tests)              SEARCH MODULE (10 Tests)
+    ━━━━━━━━━━━━━━━━━━━━━━━              ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    
+    TC_LOGIN_001 ████████████████████   TC_SEARCH_001 ██████████████████████
+    TC_LOGIN_002 ████████████████████   TC_SEARCH_002 ██████████████████████
+    TC_LOGIN_005 ████████████████████   TC_SEARCH_003 ██████████████████████
+    TC_LOGIN_008 ████████████████████   TC_SEARCH_004 ██████████████████████
+    TC_LOGIN_009 ████████████████████   TC_SEARCH_005 ██████████████████████
+                                       TC_SEARCH_006 ██████████████████████
+    35 Total Executions                TC_SEARCH_007 ██████████████████████
+    (5 tests × 7 platforms)           TC_SEARCH_008 ██████████████████████
+                                       TC_SEARCH_009 ██████████████████████
+                                       TC_SEARCH_010 ██████████████████████
+                                       
+                                       70 Total Executions
+                                       (10 tests × 7 platforms)
+```
+
+#### Platform Coverage Breakdown
+
+```
+                    CROSS-PLATFORM EXECUTION MATRIX
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                                                                 │
+    │  DESKTOP PLATFORMS                                              │
+    │     ├─ Chrome Desktop    [████████████████████] 15 tests        │
+    │     ├─ Firefox Desktop   [████████████████████] 15 tests        │
+    │     ├─ Safari Desktop    [████████████████████] 15 tests        │
+    │     └─ Edge Desktop      [████████████████████] 15 tests        │
+    │                                                                 │
+    │  MOBILE PLATFORMS                                               │
+    │     ├─ Chrome Mobile     [████████████████████] 15 tests        │
+    │     └─ Safari Mobile     [████████████████████] 15 tests        │
+    │                                                                 │
+    │  TABLET PLATFORMS                                                │
+    │     └─ iPad Pro          [████████████████████] 15 tests        │
+    │                                                                 │
+    │  TOTAL: 7 Platforms × 15 Tests = 105 Executions per Run        │
+    └─────────────────────────────────────────────────────────────────┘
 ```
 
 #### Coverage Areas
@@ -444,21 +509,23 @@ Key environment variables:
 
 The project includes two GitHub Actions workflows for automated testing:
 
-#### 1. Pull Request Tests (`playwright-tests.yml`)
+#### 1. Scheduled Tests (`playwright-tests.yml`)
 
-- **Trigger**: Automatically on PR to main/master branches
-- **Schedule**: Every 4 hours for continuous validation
+- **Trigger**: Daily at 2:00 AM UTC (no auto-trigger on commits)
+- **Schedule**: Every 24 hours for continuous validation
 - **Manual**: Via GitHub Actions UI (workflow_dispatch)
 - **Features**:
   - 4-way parallel sharding for faster execution
-  - Automatic PR comments with results
+  - Test reports and artifacts uploaded
   - Artifact retention for 30 days
   - Resource monitoring and optimization
 
 #### 2. End-to-End Tests (`e2e-tests.yml`)
 
-- **Trigger**: Push to main branch or manual
-- **Features**: Full regression suite execution
+- **Trigger**: Daily at 3:00 AM UTC (no auto-trigger on commits)
+- **Schedule**: Every 24 hours for full regression testing
+- **Manual**: Via GitHub Actions UI (workflow_dispatch)
+- **Features**: Full regression suite execution across all platforms
 
 ### CI/CD Configuration
 
@@ -841,7 +908,7 @@ Total Executions = Test Cases × Platforms
 - iPad Pro: 15 executions
 
 ```
-[REFERENCE] Complete test traceability matrix: TEST_TRACEABILITY_MATRIX.md
+[REFERENCE] Test case specifications: Google Sheets document linked above
 ```
 
 ## Version History
