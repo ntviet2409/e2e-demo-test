@@ -1,0 +1,35 @@
+{
+  "name": "orangehrm-test-automation",
+  "version": "1.0.0",
+  "scripts": {
+    "clean": "rm -rf playwright-report test-results && mkdir -p playwright-report test-results",
+    "debug": "npm run clean && ENV=dev npx playwright test --ui --project=OrangeHRM-UI-Tests",
+    "test": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --workers=4 --trace on --max-failures=0",
+    
+    "test:chrome": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Chrome-Desktop --workers=5 --trace on --max-failures=0",
+    "test:firefox": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Firefox-Desktop --workers=5 --trace on --max-failures=0",
+    "test:safari": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Safari-Desktop --workers=5 --trace on --max-failures=0",
+    "test:edge": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Edge-Windows --workers=5 --trace on --max-failures=0",
+    
+    "test:mobile": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Chrome-Mobile --project=OrangeHRM-Safari-Mobile --workers=5 --trace on --max-failures=0",
+    "test:tablet": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-iPad --workers=5 --trace on --max-failures=0",
+    
+    "test:cross-browser": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Chrome-Desktop --project=OrangeHRM-Firefox-Desktop --project=OrangeHRM-Safari-Desktop --workers=5 --trace on --max-failures=0",
+    "test:all-platforms": "npm run clean && ENV=dev NODE_OPTIONS='--no-inspect' npx playwright test --grep '@OrangeHRM' --workers=5 --trace on --max-failures=0",
+    
+    "test:headed": "npm run clean && ENV=dev HEADLESS=false npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Chrome-Desktop --workers=1 --trace on --max-failures=0",
+    "test:headless": "npm run clean && ENV=dev HEADLESS=true npx playwright test --grep '@OrangeHRM' --project=OrangeHRM-Chrome-Desktop --workers=2 --trace on --max-failures=0",
+    
+    "test:ci": "npm run clean && ENV=ci NODE_OPTIONS='--no-inspect --max-old-space-size=4096' npx playwright test --grep '@OrangeHRM' --workers=1 --trace on --max-failures=0",
+    "test:ci-sharded": "npm run clean && ENV=ci NODE_OPTIONS='--no-inspect --max-old-space-size=4096' npx playwright test --grep '@OrangeHRM' --workers=1 --trace on --max-failures=0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.46.0",
+    "@types/node": "^20.14.10",
+    "dotenv": "^16.4.7",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "winston": "^3.17.0"
+  }
+}
