@@ -7,6 +7,10 @@ on:
     branches: [ master, main ]
   workflow_dispatch: # Allow manual trigger
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     timeout-minutes: 120
@@ -55,7 +59,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report-all-platforms
+        name: playwright-report-all-platforms-${{ github.run_id }}
         path: playwright-report/
         retention-days: 30
     
@@ -63,7 +67,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: test-results-all-platforms
+        name: test-results-all-platforms-${{ github.run_id }}
         path: test-results/
         retention-days: 30
     
@@ -71,7 +75,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: playwright-traces-all-platforms
+        name: playwright-traces-all-platforms-${{ github.run_id }}
         path: test-results/**/trace.zip
         retention-days: 30
 

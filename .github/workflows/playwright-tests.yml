@@ -8,6 +8,10 @@ on:
     - cron: '0 */4 * * *'
   workflow_dispatch: # Allow manual trigger
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     timeout-minutes: 60
@@ -64,7 +68,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: playwright-report
+        name: playwright-report-shard-${{ matrix.shardIndex }}
         path: playwright-report/
         retention-days: 30
     
@@ -72,7 +76,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: test-results
+        name: test-results-shard-${{ matrix.shardIndex }}
         path: test-results/
         retention-days: 30
     
@@ -80,7 +84,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: playwright-traces
+        name: playwright-traces-shard-${{ matrix.shardIndex }}
         path: test-results/**/trace.zip
         retention-days: 30
 
